@@ -7,6 +7,7 @@ import Login from '../pages/Login/Login';
 import MyTask from '../pages/MyTask/MyTask';
 import Profile from '../pages/Profile/Profile';
 import SignUp from '../pages/SignUp/SignUp';
+import AuthRoute from './AuthRoute';
 
 const router = createBrowserRouter([
   {
@@ -23,19 +24,35 @@ const router = createBrowserRouter([
       },
       {
         path: '/add_task',
-        element: <AddTask></AddTask>,
+        element: (
+          <AuthRoute>
+            <AddTask></AddTask>
+          </AuthRoute>
+        ),
       },
       {
         path: '/my_task',
-        element: <MyTask></MyTask>,
+        element: (
+          <AuthRoute>
+            <MyTask></MyTask>
+          </AuthRoute>
+        ),
       },
       {
         path: '/finished_task',
-        element: <FinishTask></FinishTask>,
+        element: (
+          <AuthRoute>
+            <FinishTask></FinishTask>
+          </AuthRoute>
+        ),
       },
       {
         path: '/profile',
-        element: <Profile></Profile>,
+        element: (
+          <AuthRoute>
+            <Profile></Profile>
+          </AuthRoute>
+        ),
       },
       {
         path: '/login',

@@ -1,15 +1,48 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import LoaderButton from '../../components/LoaderButton';
+import { AuthContext } from '../../context/AuthProvider';
 import SocialLogin from '../Sheared/SocialLogin/SocialLogin';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+  const { loginWithEmailAndPassword, setUser, setLoading } =
+    useContext(AuthContext);
+  const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState('');
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm();
-  const handleLogin = data => console.log(data);
+  const handleLogin = data => {
+    setProcessing(true);
+    setError(error);
+    loginWithEmailAndPassword(data.email, data.password)
+      .then(result => {
+        setUser(result.user);
+        setError('');
+        setProcessing(false);
+        setLoading(false);
+        reset();
+        navigate(from, { replace: true });
+      })
+      .catch(error => {
+        setProcessing(false);
+        setLoading(false);
+        if (error.message.includes('auth/wrong-password')) {
+          setError("User and password didn't match");
+        } else if (error.message.includes('auth/user-not-found')) {
+          setError('User not found');
+        } else {
+          setError(error.message);
+        }
+      });
+  };
 
   return (
     <section className="w-11/12 mx-auto border-[3px] border-t-0 px-2 rounded-b-xl border-[#e0d4e8] border-opacity-30 py-2 flex items-center justify-between h-[82vh] bg-[#41106b] bg-opacity-10 ">
@@ -61,30 +94,41 @@ const Login = () => {
             )}
           </div>
           <input
+            type="password"
             placeholder="Enter your password"
             className="block  focus:outline-none w-full text-lg px-4 font-semibold rounded-md py-2 mb-6 text-[#33085b]"
             {...register('password', { required: 'Password is required' })}
             aria-invalid={errors.password ? 'true' : 'false'}
           />
           <div className="w-full flex justify-center items-center">
-            <input
-              className="custom-button  py-2 border-transparent text-white  leading-8 px-8 inline-flex rounded-xl text-2xl font-semibold"
-              type="submit"
-              value="Login"
-            />
+            {processing ? (
+              <span className="custom-button select-none duration-300  py-2 border-transparent text-white  leading-8 px-8 inline-flex rounded-xl text-2xl font-semibold">
+                <LoaderButton></LoaderButton>
+              </span>
+            ) : (
+              <input
+                className="custom-button  py-2 border-transparent text-white  leading-8 px-8 inline-flex rounded-xl text-2xl font-semibold"
+                type="submit"
+                value="Login"
+              />
+            )}
           </div>
         </form>
         <div>
-          <p className="mt-4 font-semibold text-xl">
-            Do you want to{' '}
-            <Link className="text-[#fe7178] font-bold" to="/sign_up">
-              {' '}
-              Create new account?
-            </Link>
-          </p>
+          {error ? (
+            <p className="mt-4 font-semibold text-[#fe7178] text-xl">{error}</p>
+          ) : (
+            <p className="mt-4 font-semibold text-xl">
+              Do you want to{' '}
+              <Link className="text-[#fe7178] font-bold" to="/sign_up">
+                {' '}
+                Create new account?
+              </Link>
+            </p>
+          )}
         </div>
         <div className="w-full">
-          <SocialLogin></SocialLogin>
+          <SocialLogin setError={setError}></SocialLogin>
         </div>
       </div>
     </section>

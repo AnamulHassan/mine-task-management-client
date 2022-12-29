@@ -37,6 +37,9 @@ a:focus {
   box-shadow: 0 0 10px #fe7178, 0 0 20px #fe7178, 0 0 20px #fe7178 inset;
   cursor: pointer;
 }
+.custom-button:disabled {
+  opacity: 60%;
+}
 .custom-button-secondary {
   background-color: #44a5fd !important;
   -webkit-transition: all 0.15s ease-in-out;
