@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import LoaderButton from '../../components/LoaderButton';
+import { AuthContext } from '../../context/AuthProvider';
 
 const AddTask = () => {
   const [isPhoto, setIsPhoto] = useState(false);
+  const imageHostKey = process.env.REACT_APP_IMGBB_API_KEY;
+  const { user } = useContext(AuthContext);
+  const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
@@ -14,7 +21,55 @@ const AddTask = () => {
       return setIsPhoto(true);
     } else {
       setIsPhoto(false);
-      console.log(data);
+      const title = data.taskTitle;
+      const image = data.photo[0];
+      const description = data.taskDescription;
+      const formData = new FormData();
+      const date = new Date().toISOString();
+      const email = user.email;
+      formData.append('image', image);
+      setProcessing(true);
+      setError('');
+      const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
+      fetch(url, {
+        method: 'POST',
+        body: formData,
+      })
+        .then(res => res.json())
+        .then(imgData => {
+          if (imgData.success) {
+            const taskInfo = {
+              title,
+              image: imgData.data.url,
+              description,
+              date,
+              email,
+              isCompleted: false,
+            };
+            fetch(`http://localhost:5000/add_task?email=${user?.email}`, {
+              method: 'POST',
+              headers: {
+                'content-type': 'application/json',
+                authorization: `Bearer ${JSON.parse(
+                  localStorage.getItem('task-manager-token')
+                )}`,
+              },
+              body: JSON.stringify(taskInfo),
+            })
+              .then(res => res.json())
+              .then(result => {
+                if (result.acknowledged) {
+                  setProcessing(false);
+                  navigate('/my_task');
+                }
+              })
+              .catch(error => {
+                console.log(error.message);
+                setError(error.message);
+                setProcessing(false);
+              });
+          }
+        });
     }
   };
   return (
@@ -98,11 +153,26 @@ const AddTask = () => {
             rows="3"
           />
           <div className="w-full flex justify-end mt-4">
-            <input
-              className="custom-button  py-2 border-transparent text-white  leading-8 px-8 inline-flex rounded-xl text-2xl font-semibold"
-              type="submit"
-              value="Add Task"
-            />
+            {processing ? (
+              <span className="custom-button  py-2 border-transparent text-white  leading-8 px-8 inline-flex select-none rounded-xl text-2xl font-semibold">
+                <LoaderButton></LoaderButton>
+              </span>
+            ) : (
+              <div className="flex items-center w-full justify-between">
+                {error ? (
+                  <p className="text-lg font-semibold text-[#fe7178]">
+                    {error}
+                  </p>
+                ) : (
+                  <span>&nbsp;</span>
+                )}
+                <input
+                  className="custom-button  py-2 border-transparent text-white  leading-8 px-8 inline-flex rounded-xl text-2xl font-semibold"
+                  type="submit"
+                  value="Add Task"
+                />
+              </div>
+            )}
           </div>
         </form>
       </div>

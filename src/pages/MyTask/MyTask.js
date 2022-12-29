@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthProvider';
 import MyTaskCard from './MyTaskCard';
 
 const MyTask = () => {
+  const { user } = useContext(AuthContext);
   const {
     data: tasks = [],
     isLoading,
@@ -11,7 +13,18 @@ const MyTask = () => {
   } = useQuery({
     queryKey: ['tasks'],
     queryFn: async () => {
-      const res = await fetch('tasks.json');
+      const res = await fetch(
+        `http://localhost:5000/my_task?email=${user?.email}`,
+        {
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json',
+            authorization: `Bearer ${JSON.parse(
+              localStorage.getItem('task-manager-token')
+            )}`,
+          },
+        }
+      );
       const data = await res.json();
       return data;
     },
@@ -29,7 +42,11 @@ const MyTask = () => {
             <div className="space-y-2 w-full">
               {tasks.length > 0 &&
                 tasks.map((task, index) => (
-                  <MyTaskCard key={index} taskData={task}></MyTaskCard>
+                  <MyTaskCard
+                    key={index}
+                    taskData={task}
+                    refetch={refetch}
+                  ></MyTaskCard>
                 ))}
             </div>
           </div>

@@ -7,7 +7,7 @@ import {
 } from '@material-tailwind/react';
 
 const TaskDetails = ({ handleDetailsOpen, openDetails, taskData }) => {
-  const { title, description, thumbnails } = taskData;
+  const { title, description, image } = taskData;
   return (
     <Fragment>
       <Dialog
@@ -21,11 +21,11 @@ const TaskDetails = ({ handleDetailsOpen, openDetails, taskData }) => {
         }}
       >
         <DialogHeader className="text-[#e0d4e8]">Task Description</DialogHeader>
-        <DialogBody divider>
+        <DialogBody>
           <div className="flex text-[#e0d4e8] space-x-3">
             <img
-              className="w-1/2 rounded-xl"
-              src={thumbnails ? thumbnails : 'Image not found'}
+              className="w-1/2 h-96 rounded-xl"
+              src={image ? image : 'Image not found'}
               alt=""
             />
             <div>

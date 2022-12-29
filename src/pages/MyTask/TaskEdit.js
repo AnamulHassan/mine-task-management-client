@@ -1,5 +1,10 @@
 import React, { Fragment } from 'react';
-import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from '@material-tailwind/react';
 import { useForm } from 'react-hook-form';
 
 const TaskEdit = ({ handleEditOpen, openEdit, taskData }) => {
@@ -23,7 +28,7 @@ const TaskEdit = ({ handleEditOpen, openEdit, taskData }) => {
         }}
       >
         <DialogHeader className="text-[#e0d4e8]">Task Edit</DialogHeader>
-        <DialogBody divider>
+        <DialogBody>
           <div className="w-full flex text-[#e0d4e8] space-x-3">
             <form className="w-full" onSubmit={handleSubmit(handleEditTask)}>
               <div className=" flex justify-between items-center">
@@ -75,6 +80,7 @@ const TaskEdit = ({ handleEditOpen, openEdit, taskData }) => {
                 aria-invalid={errors.taskDescription ? 'true' : 'false'}
                 rows="3"
               />
+
               <div className="w-full flex justify-end mt-4 space-x-3">
                 <button
                   className="custom-button  py-2 border-transparent text-white  leading-8 px-4 inline-flex rounded-lg text-xl font-semibold"
@@ -91,6 +97,7 @@ const TaskEdit = ({ handleEditOpen, openEdit, taskData }) => {
             </form>
           </div>
         </DialogBody>
+        <DialogFooter></DialogFooter>
       </Dialog>
     </Fragment>
   );

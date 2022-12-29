@@ -13,7 +13,7 @@ const AuthRoute = ({ children }) => {
       </section>
     );
   }
-  if (user?.uid) {
+  if (user) {
     return children;
   }
   return <Navigate to="/login" state={{ from: location }} replace></Navigate>;
