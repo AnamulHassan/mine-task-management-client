@@ -46,16 +46,20 @@ const AddTask = () => {
               email,
               isCompleted: false,
             };
-            fetch(`http://localhost:5000/add_task?email=${user?.email}`, {
-              method: 'POST',
-              headers: {
-                'content-type': 'application/json',
-                authorization: `Bearer ${JSON.parse(
-                  localStorage.getItem('task-manager-token')
-                )}`,
-              },
-              body: JSON.stringify(taskInfo),
-            })
+            fetch(
+              `https://task-management-app-server-inky.vercel.app/add_task?email=${user?.email}`,
+              // fetch(`http://localhost:5000/add_task?email=${user?.email}`,
+              {
+                method: 'POST',
+                headers: {
+                  'content-type': 'application/json',
+                  authorization: `Bearer ${JSON.parse(
+                    localStorage.getItem('task-manager-token')
+                  )}`,
+                },
+                body: JSON.stringify(taskInfo),
+              }
+            )
               .then(res => res.json())
               .then(result => {
                 if (result.acknowledged) {

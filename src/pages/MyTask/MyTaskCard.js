@@ -20,16 +20,20 @@ const MyTaskCard = ({ taskData, refetch }) => {
   const handleDeleteOpen = () => setOpenDelete(!openDelete);
   const handleCompleteTask = id => {
     setProcessing(true);
-    fetch(`http://localhost:5000/task_modify?email=${user?.email}`, {
-      method: 'PATCH',
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${JSON.parse(
-          localStorage.getItem('task-manager-token')
-        )}`,
-      },
-      body: JSON.stringify({ id }),
-    })
+    fetch(
+      `https://task-management-app-server-inky.vercel.app/task_modify?email=${user?.email}`,
+      // fetch(`http://localhost:5000/task_modify?email=${user?.email}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${JSON.parse(
+            localStorage.getItem('task-manager-token')
+          )}`,
+        },
+        body: JSON.stringify({ id }),
+      }
+    )
       .then(res => res.json())
       .then(result => {
         if (result.modifiedCount > 0) {
@@ -45,16 +49,20 @@ const MyTaskCard = ({ taskData, refetch }) => {
   const handleDeleteTask = id => {
     console.log(id);
     setProcessingDelete(true);
-    fetch(`http://localhost:5000/task_delete?email=${user?.email}`, {
-      method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${JSON.parse(
-          localStorage.getItem('task-manager-token')
-        )}`,
-      },
-      body: JSON.stringify({ id }),
-    })
+    fetch(
+      `https://task-management-app-server-inky.vercel.app/task_delete?email=${user?.email}`,
+      // fetch(`http://localhost:5000/task_delete?email=${user?.email}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${JSON.parse(
+            localStorage.getItem('task-manager-token')
+          )}`,
+        },
+        body: JSON.stringify({ id }),
+      }
+    )
       .then(res => res.json())
       .then(result => {
         if (result.deletedCount > 0) {

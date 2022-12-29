@@ -14,7 +14,8 @@ const MyTask = () => {
     queryKey: ['tasks'],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/my_task?email=${user?.email}`,
+        `https://task-management-app-server-inky.vercel.app/my_task?email=${user?.email}`,
+        // `http://localhost:5000/my_task?email=${user?.email}`,
         {
           method: 'GET',
           headers: {
