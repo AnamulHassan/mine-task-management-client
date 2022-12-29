@@ -1,3 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +19,128 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+a:hover,
+a:active,
+a:visited,
+a:focus {
+  text-decoration: none !important;
+}
+
+.custom-button {
+  background-color: #fe7178;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+.custom-button:hover {
+  box-shadow: 0 0 10px #fe7178, 0 0 20px #fe7178, 0 0 20px #fe7178 inset;
+  cursor: pointer;
+}
+.custom-button-secondary {
+  background-color: #44a5fd !important;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+.custom-button-secondary:hover {
+  box-shadow: 0 0 10px #44a5fd, 0 0 20px #44a5fd, 0 0 20px #44a5fd inset;
+  cursor: pointer;
+}
+
+.custom-button-outline {
+  background-color: transparent;
+  border: 4px solid #fe7178;
+  -webkit-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+.custom-button-outline:hover {
+  box-shadow: 0 0 10px #fe7178, 0 0 20px #fe7178, 0 0 20px #fe7178 inset;
+  cursor: pointer;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #33085b;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #6b1d5c;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #fe7178;
+}
+
+/*custom input file*/
+.custom-file-input {
+  color: transparent;
+}
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: 'Choose your photo';
+  display: inline-block;
+  outline: none;
+  width: 100%;
+  padding: 8px 16px;
+  height: 100%;
+  color: #bdbdbd;
+  background-color: #fff;
+  white-space: nowrap;
+  -webkit-user-select: none;
+}
+.custom-file-input:focus {
+  outline: none !important;
+}
+
+.custom-text {
+  background-size: 200%;
+  background-image: none;
+  background-image: linear-gradient(
+    45deg,
+    #fe7178 0%,
+    #fe7178 35%,
+    #44a5fd 66%,
+    #44a5fd 100%
+  );
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-animation: glow 9s linear infinite;
+  animation: glow 9s linear infinite;
+}
+@-webkit-keyframes glow {
+  0% {
+    background-position: 0% 43%;
+  }
+
+  50% {
+    background-position: 100% 58%;
+  }
+
+  100% {
+    background-position: 0% 43%;
+  }
+}
+
+@keyframes glow {
+  0% {
+    background-position: 0% 43%;
+  }
+
+  50% {
+    background-position: 100% 58%;
+  }
+
+  100% {
+    background-position: 0% 43%;
+  }
 }
