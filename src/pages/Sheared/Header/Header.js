@@ -133,6 +133,15 @@ const Header = () => {
                         </Button>
                       </MenuHandler>
                       <MenuList className="!bg-[#481162] border-[3px] border-[#e0d4e8] border-opacity-30 !bg-opacity-30 text-[#e0d4e8] text-sm md:text-md lg:text-lg font-semibold">
+                        <MenuItem className="block lg:hidden hover:bg-[#e0d4e8] hover:bg-opacity-10 hover:text-[#e0d4e8]">
+                          <Link to="/add_task">Add Task</Link>
+                        </MenuItem>
+                        <MenuItem className="block lg:hidden hover:bg-[#e0d4e8] hover:bg-opacity-10 hover:text-[#e0d4e8]">
+                          <Link to="/my_task">My Task</Link>
+                        </MenuItem>
+                        <MenuItem className="block lg:hidden hover:bg-[#e0d4e8] hover:bg-opacity-10 hover:text-[#e0d4e8]">
+                          <Link to="/finished_task">Finished Task</Link>
+                        </MenuItem>
                         <MenuItem className="hover:bg-[#e0d4e8] hover:bg-opacity-10 hover:text-[#e0d4e8]">
                           <Link to="/profile">Your Profile</Link>
                         </MenuItem>
@@ -142,11 +151,11 @@ const Header = () => {
                         >
                           {lightMode ? (
                             <span className="inline-flex items-center">
-                              Light Mode <FaSun className="ml-2" />
+                              <FaSun className="ml-2" /> Light Mode
                             </span>
                           ) : (
                             <span className="inline-flex items-center">
-                              Dark Mode <FaMoon className="ml-2" />
+                              <FaMoon className="ml-2" /> Dark Mode
                             </span>
                           )}
                         </MenuItem>
