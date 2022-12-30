@@ -8,6 +8,7 @@ import {
   FaSun,
   FaTasks,
 } from 'react-icons/fa';
+import mainLogo from '../../../asset/logo/main-logo.png';
 import {
   Menu,
   MenuHandler,
@@ -74,7 +75,13 @@ const Header = () => {
     <header className="pt-6">
       <nav className="w-11/12 mx-auto border-[3px] border-b-0 px-2 rounded-t-xl border-[#e0d4e8] border-opacity-30 py-2 flex items-center justify-between bg-[#41106b] bg-opacity-50">
         <div>
-          <Link to="/">MineTask</Link>
+          <Link to="/">
+            <img
+              className="h-8 md:h-10 lg:h-12 overflow-hidden animate-pulse"
+              src={mainLogo}
+              alt=""
+            />
+          </Link>
         </div>
         <div className="hidden lg:block text-xl space-x-4 font-semibold">
           {navItems}
@@ -88,7 +95,7 @@ const Header = () => {
             <div>
               {user?.uid ? (
                 <div className="flex items-center">
-                  <div className="border-[3px] border-opacity-40 rounded-full border-[#e0d4e8] relative  ">
+                  <div className="border-[3px] overflow-hidden border-opacity-40 rounded-full border-[#e0d4e8] relative  ">
                     <img
                       className="w-8 md:w-10 lg:w-14 h-8 md:h-10 lg:h-14 rounded-full z-20"
                       src={user?.photoURL ? user.photoURL : 'Image not found'}
