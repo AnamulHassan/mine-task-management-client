@@ -26,18 +26,20 @@ const FinishedTaskCard = ({ taskData, refetch }) => {
   const handleShowCommentOpen = () => setOpenShowComment(!openShowComment);
   const handleNotCompleteTask = id => {
     setProcessing(true);
-    // fetch(
-    //   `https://task-management-app-server-inky.vercel.app/task_modify?email=${user?.email}`,
-    fetch(`http://localhost:5000/finished_task_modify?email=${user?.email}`, {
-      method: 'PATCH',
-      headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${JSON.parse(
-          localStorage.getItem('task-manager-token')
-        )}`,
-      },
-      body: JSON.stringify({ id }),
-    })
+    fetch(
+      `https://task-management-app-server-inky.vercel.app/finished_task_modify?email=${user?.email}`,
+      // fetch(`http://localhost:5000/finished_task_modify?email=${user?.email}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${JSON.parse(
+            localStorage.getItem('task-manager-token')
+          )}`,
+        },
+        body: JSON.stringify({ id }),
+      }
+    )
       .then(res => res.json())
       .then(result => {
         if (result.modifiedCount > 0) {
@@ -87,24 +89,24 @@ const FinishedTaskCard = ({ taskData, refetch }) => {
       taskId: _id,
       comment: data.comment,
     };
-    console.log(comment);
-    return;
-    fetch(
-      `https://task-management-app-server-inky.vercel.app/add_task?email=${user.email}`,
-      // fetch(`http://localhost:5000/add_task?email=${user?.email}`,
-      {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          authorization: `Bearer ${JSON.parse(
-            localStorage.getItem('task-manager-token')
-          )}`,
-        },
-        body: JSON.stringify(comment),
-      }
-    )
-      .then(res => res.json())
-      .then(result => {});
+    // console.log(comment);
+    // return;
+    // fetch(
+    //   `https://task-management-app-server-inky.vercel.app/add_task?email=${user.email}`,
+    //   // fetch(`http://localhost:5000/add_task?email=${user?.email}`,
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       'content-type': 'application/json',
+    //       authorization: `Bearer ${JSON.parse(
+    //         localStorage.getItem('task-manager-token')
+    //       )}`,
+    //     },
+    //     body: JSON.stringify(comment),
+    //   }
+    // )
+    //   .then(res => res.json())
+    //   .then(result => {});
   };
   return (
     <div className="w-full mx-auto bg-[#e1896a] bg-opacity-10 flex items-center justify-between rounded-xl overflow-hidden space-x-2 lg:space-x-6 border-2 border-[#e0d4e8] border-opacity-30 py-2 md:py-0">
