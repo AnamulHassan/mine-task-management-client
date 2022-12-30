@@ -92,27 +92,26 @@ a:focus {
 }
 
 /*custom input file*/
-.custom-file-input {
+/* .custom-file-input {
   color: transparent;
-}
-.custom-file-input::-webkit-file-upload-button {
+} */
+/* .custom-file-input::-webkit-file-upload-button {
   visibility: hidden;
-}
-.custom-file-input::before {
+} */
+/* .custom-file-input::before {
   content: 'Choose your photo';
   display: inline-block;
   outline: none;
   width: 100%;
-  padding: 8px 16px;
   height: 100%;
   color: #bdbdbd;
   background-color: #fff;
   white-space: nowrap;
-  -webkit-user-select: none;
-}
+  -webkit-user-select: none; */
+/* }
 .custom-file-input:focus {
   outline: none !important;
-}
+} */
 
 .custom-text {
   background-size: 200%;

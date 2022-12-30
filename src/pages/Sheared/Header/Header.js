@@ -76,10 +76,12 @@ const Header = () => {
         <div>
           <Link to="/">MineTask</Link>
         </div>
-        <div className="text-xl space-x-4 font-semibold">{navItems}</div>
+        <div className="hidden lg:block text-xl space-x-4 font-semibold">
+          {navItems}
+        </div>
         <div>
           {loading ? (
-            <span className="custom-button  py-2 mr-2 border-transparent text-white  leading-8 px-8 inline-flex rounded-xl text-2xl font-semibold">
+            <span className="custom-button select-none duration-300  mr-2 py-1 md:py-2 border-transparent text-white  leading-8 px-6 md:px-8 inline-flex rounded-xl text-xl md:text-2xl font-semibold">
               <LoaderButton></LoaderButton>
             </span>
           ) : (
@@ -88,17 +90,19 @@ const Header = () => {
                 <div className="flex items-center">
                   <div className="border-[3px] border-opacity-40 rounded-full border-[#e0d4e8] relative  ">
                     <img
-                      className="w-14 h-14 rounded-full z-20"
+                      className="w-8 md:w-10 lg:w-14 h-8 md:h-10 lg:h-14 rounded-full z-20"
                       src={user?.photoURL ? user.photoURL : 'Image not found'}
                       alt=""
                     />
                     <div className="bg-[#33085b] hover:opacity-0 duration-300 opacity-20 w-full h-full absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2"></div>
                   </div>
                   <div className="ml-2">
-                    <h4 className="text-xl font-semibold">
+                    <h4 className="text-sm md:text-lg lg:text-xl font-semibold">
                       {user?.displayName ? user?.displayName : 'Name not found'}
                     </h4>
-                    <h5 className="text-[#b89cc2] text-lg">Web Developer</h5>
+                    <h5 className="text-[#b89cc2] text-xs md:text-md lg:text-lg">
+                      Web Developer
+                    </h5>
                   </div>
                   <div className="mx-2">
                     <Menu
@@ -116,12 +120,12 @@ const Header = () => {
                           className="!text-[#e0d4e8] border-0 focus:ring-0 rounded-none p-0"
                           variant="outlined"
                         >
-                          <span className="h-10 w-10 bg-[#e0d4e8] inline-flex bg-opacity-0 items-center justify-center hover:bg-opacity-10 rounded-2xl duration-300">
-                            <FaAngleDown className="text-2xl" />{' '}
+                          <span className="h-6 md:h-8 lg:h-10 w-6 md:w-8 lg:w-10 bg-[#e0d4e8] inline-flex bg-opacity-0 items-center justify-center hover:bg-opacity-10 rounded-2xl duration-300">
+                            <FaAngleDown className="text-lg md:text-xl lg:text-2xl" />{' '}
                           </span>
                         </Button>
                       </MenuHandler>
-                      <MenuList className="!bg-[#481162] border-[3px] border-[#e0d4e8] border-opacity-30 bg-opacity-30 text-[#e0d4e8] text-lg font-semibold">
+                      <MenuList className="!bg-[#481162] border-[3px] border-[#e0d4e8] border-opacity-30 !bg-opacity-30 text-[#e0d4e8] text-sm md:text-md lg:text-lg font-semibold">
                         <MenuItem className="hover:bg-[#e0d4e8] hover:bg-opacity-10 hover:text-[#e0d4e8]">
                           <Link to="/profile">Your Profile</Link>
                         </MenuItem>
@@ -152,7 +156,7 @@ const Header = () => {
               ) : (
                 <Link
                   to="/login"
-                  className="custom-button  py-2 mr-2 border-transparent text-white  leading-8 px-8 inline-flex rounded-xl text-2xl font-semibold"
+                  className="custom-button mr-2 py-1 md:py-2 border-transparent text-white  leading-8 px-4 md:px-8 inline-flex rounded-xl text-xl md:text-2xl font-semibold"
                 >
                   Login
                 </Link>

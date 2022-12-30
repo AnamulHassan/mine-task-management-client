@@ -1,17 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import LoaderSecondary from '../../components/LoaderSecondary';
 import { AuthContext } from '../../context/AuthProvider';
 import MyTaskCard from './MyTaskCard';
 
 const MyTask = () => {
+  const { pathname } = useLocation();
   const { user } = useContext(AuthContext);
   const {
     data: tasks = [],
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ['tasks'],
+    queryKey: ['tasks', pathname],
     queryFn: async () => {
       const res = await fetch(
         `https://task-management-app-server-inky.vercel.app/my_task?email=${user?.email}`,
@@ -30,15 +32,17 @@ const MyTask = () => {
       return data;
     },
   });
-  // console.log(tasks);
+  if (isLoading) {
+    return <LoaderSecondary></LoaderSecondary>;
+  }
   return (
     <section>
       {tasks.length > 0 ? (
         <section className="w-11/12 mx-auto border-[3px] border-t-0 px-2 rounded-b-xl border-[#e0d4e8] border-opacity-30 py-2 bg-[#41106b] h-screen bg-opacity-10 pb-6 ">
           <h2 className="custom-text text-center my-4 font-bold text-3xl">
-            Your Task List
+            Your task list
           </h2>
-          <div className="flex flex-col justify-center items-center mt-8 mx-auto w-full  bg-[#e0d4e8] bg-opacity-10 rounded-xl py-6 px-8 relative overflow-hidden">
+          <div className="flex flex-col justify-center items-center mt-8 mx-auto w-full  bg-[#e0d4e8] bg-opacity-10 rounded-xl py-6 px-2 lg:px-8 relative overflow-hidden">
             <div className="absolute h-96 w-96 rounded-full bg-[#fe7178] -z-10 right-5 top-5 bg-opacity-20 scale-150 translate-x-1/2 -translate-y-1/2"></div>
             <div className="space-y-2 w-full">
               {tasks.length > 0 &&
@@ -53,7 +57,7 @@ const MyTask = () => {
           </div>
         </section>
       ) : (
-        <div className="w-11/12 mx-auto border-[3px] border-t-0 px-2 rounded-b-xl border-[#e0d4e8] border-opacity-30 py-2 bg-[#41106b] flex flex-col justify-center items-center h-[90vh] bg-opacity-10 pb-6">
+        <div className="w-11/12 mx-auto border-[3px] border-t-0 px-2 rounded-b-xl border-[#e0d4e8] border-opacity-30 py-2 bg-[#41106b] flex flex-col justify-center items-center h-screen bg-opacity-10 pb-6">
           <h2 className="text-2xl font-bold custom-text">
             There is no task here
           </h2>

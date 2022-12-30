@@ -1,43 +1,43 @@
 import React, { useContext, useState } from 'react';
 import { FaCalendarAlt, FaCheck, FaSpinner } from 'react-icons/fa';
 import { AuthContext } from '../../context/AuthProvider';
-import TaskDeleteModal from './TaskDeleteModal';
-import TaskDetails from './TaskDetails';
-import TaskEdit from './TaskEdit';
+import TaskDeleteModal from '../MyTask/TaskDeleteModal';
+import TaskDetails from '../MyTask/TaskDetails';
+import AddComment from './AddComment';
 
-const MyTaskCard = ({ taskData, refetch }) => {
+const FinishedTaskCard = ({ taskData, refetch }) => {
   const { user } = useContext(AuthContext);
   // console.log(taskData);
-  const { title, image, date, _id, isCompleted } = taskData;
+  const { title, image, date, _id, isCommented } = taskData;
   const [openDetails, setOpenDetails] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
+  const [openComment, setOpenComment] = useState(false);
+  const [openShowComment, setOpenShowComment] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [processingDelete, setProcessingDelete] = useState(false);
+  const [processingComment, setProcessingComment] = useState(false);
 
   const handleDetailsOpen = () => setOpenDetails(!openDetails);
-  const handleEditOpen = status => {
-    if (status === 'toggle') {
-      setOpenEdit(!openEdit);
-    }
-  };
+
+  const handleOpenComment = () => setOpenComment(!openComment);
+
   const handleDeleteOpen = () => setOpenDelete(!openDelete);
-  const handleCompleteTask = id => {
+
+  const handleShowCommentOpen = () => setOpenShowComment(!openShowComment);
+  const handleNotCompleteTask = id => {
     setProcessing(true);
-    fetch(
-      `https://task-management-app-server-inky.vercel.app/task_modify?email=${user?.email}`,
-      // fetch(`http://localhost:5000/task_modify?email=${user?.email}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'content-type': 'application/json',
-          authorization: `Bearer ${JSON.parse(
-            localStorage.getItem('task-manager-token')
-          )}`,
-        },
-        body: JSON.stringify({ id }),
-      }
-    )
+    // fetch(
+    //   `https://task-management-app-server-inky.vercel.app/task_modify?email=${user?.email}`,
+    fetch(`http://localhost:5000/finished_task_modify?email=${user?.email}`, {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${JSON.parse(
+          localStorage.getItem('task-manager-token')
+        )}`,
+      },
+      body: JSON.stringify({ id }),
+    })
       .then(res => res.json())
       .then(result => {
         if (result.modifiedCount > 0) {
@@ -51,7 +51,7 @@ const MyTaskCard = ({ taskData, refetch }) => {
       });
   };
   const handleDeleteTask = id => {
-    // console.log(id);
+    console.log(id);
     setProcessingDelete(true);
     fetch(
       `https://task-management-app-server-inky.vercel.app/task_delete?email=${user?.email}`,
@@ -80,6 +80,32 @@ const MyTaskCard = ({ taskData, refetch }) => {
         console.log(error);
       });
   };
+  const handleCommentSubmit = data => {
+    // setProcessingComment
+    const comment = {
+      email: user.email,
+      taskId: _id,
+      comment: data.comment,
+    };
+    console.log(comment);
+    return;
+    fetch(
+      `https://task-management-app-server-inky.vercel.app/add_task?email=${user.email}`,
+      // fetch(`http://localhost:5000/add_task?email=${user?.email}`,
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${JSON.parse(
+            localStorage.getItem('task-manager-token')
+          )}`,
+        },
+        body: JSON.stringify(comment),
+      }
+    )
+      .then(res => res.json())
+      .then(result => {});
+  };
   return (
     <div className="w-full mx-auto bg-[#e1896a] bg-opacity-10 flex items-center justify-between rounded-xl overflow-hidden space-x-2 lg:space-x-6 border-2 border-[#e0d4e8] border-opacity-30 py-2 md:py-0">
       <div className="w-2/12 lg:w-1/12 hidden md:block">
@@ -91,7 +117,7 @@ const MyTaskCard = ({ taskData, refetch }) => {
       </div>
       <div className="flex  overflow-hidden flex-col lg:flex-row justify-between space-x-2 lg:space-x-6 w-8/12 lg:w-7/12">
         <div className="inline-flex flex-col lg:flex-row w-full items-start lg:items-center justify-between space-x-2 lg:space-x-4 text-sm lg:text-lg font-normal md:font-semibold">
-          <h2>
+          <h2 className="inline">
             {title ? (
               <span className="flex items-center">
                 <FaCheck className="hidden md:block text-lg mr-1 lg:mr-2" />
@@ -120,34 +146,35 @@ const MyTaskCard = ({ taskData, refetch }) => {
           >
             Details
           </button>
-          <button
-            className="custom-button-secondary py-[2px] md:py-1 px-2 md:px-2  lg:px-4 rounded-lg text-white text-xs md:text-sm lg:text-md font-semibold"
-            onClick={() => handleEditOpen('toggle')}
-          >
-            Edit
-          </button>
+          {isCommented ? (
+            <button
+              className="custom-button-secondary py-[2px] md:py-1 px-2 md:px-2  lg:px-4 rounded-lg text-white text-xs md:text-sm lg:text-md font-semibold"
+              onClick={handleShowCommentOpen}
+            >
+              Show Comment
+            </button>
+          ) : (
+            <button
+              className="custom-button-secondary py-[2px] md:py-1 px-2 md:px-2  lg:px-4 rounded-lg text-white text-xs md:text-sm lg:text-md font-semibold"
+              onClick={handleOpenComment}
+            >
+              Comment
+            </button>
+          )}
         </div>
       </div>
-      <div className=" space-y-2 md:space-y-0 space-x-0 md:space-x-4 lg:space-x-6 w-4/12 lg:w-3/12 flex flex-col md:flex-row items-start justify-start md:justify-end pr-6">
+      <div className="space-y-2 md:space-y-0 space-x-0 md:space-x-4 lg:space-x-6 w-4/12 lg:w-3/12 flex flex-col md:flex-row items-start justify-start md:justify-end pr-6">
         {processing ? (
           <span className="custom-button-secondary py-[2px] md:py-1 px-2 md:px-2  lg:px-4 rounded-lg text-white text-xs md:text-sm lg:text-md font-semibold flex select-none items-center">
             Loading <FaSpinner className="animate-spin text-white ml-1" />
           </span>
         ) : (
-          <div>
-            {isCompleted ? (
-              <span className="custom-button-tertiary py-[2px] md:py-1 px-2 md:px-2  lg:px-4 rounded-lg text-[#33085b] text-xs md:text-sm lg:text-md font-semibold flex select-none items-center">
-                Completed
-              </span>
-            ) : (
-              <button
-                onClick={() => handleCompleteTask(_id)}
-                className="custom-button-secondary py-[2px] md:py-1 px-2 md:px-2  lg:px-4 rounded-lg text-white text-xs md:text-sm lg:text-md font-semibold"
-              >
-                Complete
-              </button>
-            )}
-          </div>
+          <button
+            onClick={() => handleNotCompleteTask(_id)}
+            className="custom-button-secondary py-[2px] md:py-1 px-2 md:px-2  lg:px-4 rounded-lg text-white text-xs md:text-sm lg:text-md font-semibold"
+          >
+            Undone
+          </button>
         )}
 
         <button
@@ -163,12 +190,12 @@ const MyTaskCard = ({ taskData, refetch }) => {
           handleDetailsOpen={handleDetailsOpen}
           openDetails={openDetails}
         ></TaskDetails>
-        <TaskEdit
-          handleEditOpen={handleEditOpen}
-          setOpenEdit={setOpenEdit}
-          taskData={taskData}
-          openEdit={openEdit}
-        ></TaskEdit>
+        <AddComment
+          handleCommentSubmit={handleCommentSubmit}
+          handleOpenComment={handleOpenComment}
+          openComment={openComment}
+          processingComment={processingComment}
+        ></AddComment>
         <TaskDeleteModal
           taskData={taskData}
           handleDeleteOpen={handleDeleteOpen}
@@ -181,4 +208,4 @@ const MyTaskCard = ({ taskData, refetch }) => {
   );
 };
 
-export default MyTaskCard;
+export default FinishedTaskCard;
